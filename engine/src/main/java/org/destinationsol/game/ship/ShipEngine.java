@@ -32,6 +32,9 @@ public class ShipEngine {
 
     private final Engine myItem;
     private float myRecoverAwait;
+    
+    private final float acceleration;
+    private final float topSpeedModifier;
 
     public ShipEngine(Engine engine) {
         myItem = engine;
@@ -49,28 +52,28 @@ public class ShipEngine {
 
     private boolean applyInput(SolGame cmp, float shipAngle, Pilot provider, Body body, Vector2 spd,
                                boolean controlsEnabled, float mass) {
-        boolean spdOk = SolMath.canAccelerate(shipAngle, spd);
+        boolean spdOk = SolMath.canAccelerateCustom(shipAngle, spd, topSpeedModifier);
         boolean working = controlsEnabled && provider.isUp() && spdOk;
 
-        Engine e = myItem;
+        Engine engineItem = myItem;
         if (working) {
-            Vector2 v = SolMath.fromAl(shipAngle, mass * e.getAcc());
+            Vector2 v = SolMath.fromAl(shipAngle, mass * acceleration);
             body.applyForceToCenter(v, true);
             SolMath.free(v);
         }
 
-        float ts = cmp.getTimeStep();
+        float timeStep = cmp.getTimeStep();
         float rotSpd = body.getAngularVelocity() * SolMath.radDeg;
         float desiredRotSpd = 0;
-        float rotAcc = e.getRotAcc();
-        boolean l = controlsEnabled && provider.isLeft();
-        boolean r = controlsEnabled && provider.isRight();
+        float rotAcc = engineItem.getRotAcc();
+        boolean leftOn = controlsEnabled && provider.isLeft();
+        boolean rightOn = controlsEnabled && provider.isRight();
         float absRotSpd = SolMath.abs(rotSpd);
-        if (absRotSpd < e.getMaxRotSpd() && l != r) {
-            desiredRotSpd = SolMath.toInt(r) * e.getMaxRotSpd();
+        if (absRotSpd < engineItem.getMaxRotSpd() && leftOn != rightOn) {
+            desiredRotSpd = SolMath.toInt(rightOn) * engineItem.getMaxRotSpd();
             if (absRotSpd < MAX_RECOVER_ROT_SPD) {
                 if (myRecoverAwait > 0) {
-                    myRecoverAwait -= ts;
+                    myRecoverAwait -= timeStep;
                 }
                 if (myRecoverAwait <= 0) {
                     rotAcc *= RECOVER_MUL;
@@ -79,7 +82,7 @@ public class ShipEngine {
         } else {
             myRecoverAwait = RECOVER_AWAIT;
         }
-        body.setAngularVelocity(SolMath.degRad * SolMath.approach(rotSpd, desiredRotSpd, rotAcc * ts));
+        body.setAngularVelocity(SolMath.degRad * SolMath.approach(rotSpd, desiredRotSpd, rotAcc * timeStep));
         return working;
     }
 

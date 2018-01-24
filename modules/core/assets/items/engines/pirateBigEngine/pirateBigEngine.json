@@ -1,5 +1,13 @@
 {
+    "acceleration": 1,
     "big": true,
+    "effect": {
+        "effectFile": "core:flame",
+        "size": 0.3,
+        "tex": "core:fire",
+        "tint": "hsb 8 75 100"
+    },
+    "topSpeedMultiplier": 1,
     "workSounds": [
         "core:medEngineWork0",
         "core:medEngineWork1",
