@@ -32,12 +32,12 @@ public class ShipEngine {
 
     private final Engine myItem;
     private float myRecoverAwait;
-    
-    private final float acceleration;
-    private final float topSpeedModifier;
 
-    public ShipEngine(Engine engine) {
+    private final float acceleration;
+
+    public ShipEngine(Engine engine, float accel) {
         myItem = engine;
+        acceleration = accel;
     }
 
     public void update(float angle, SolGame game, Pilot provider, Body body, Vector2 spd, SolObject owner,
@@ -52,12 +52,12 @@ public class ShipEngine {
 
     private boolean applyInput(SolGame cmp, float shipAngle, Pilot provider, Body body, Vector2 spd,
                                boolean controlsEnabled, float mass) {
-        boolean spdOk = SolMath.canAccelerateCustom(shipAngle, spd, topSpeedModifier);
+        boolean spdOk = SolMath.canAccelerateCustom(shipAngle, spd, acceleration);
         boolean working = controlsEnabled && provider.isUp() && spdOk;
 
         Engine engineItem = myItem;
         if (working) {
-            Vector2 v = SolMath.fromAl(shipAngle, mass * acceleration);
+            Vector2 v = SolMath.fromAl(shipAngle, mass);
             body.applyForceToCenter(v, true);
             SolMath.free(v);
         }

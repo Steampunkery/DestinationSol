@@ -1,5 +1,4 @@
 {
-    "acceleration": 1,
     "big": false,
     "effect": {
         "effectFile": "core:smokeEngine",
@@ -7,7 +6,7 @@
         "tex": "core:smoke",
         "tint": "smoke"
     },
-    "topSpeedMultiplier": 1,
+    "thrust": 300,
     "workSounds": [
         "core:diesel",
         "core:diesel2",

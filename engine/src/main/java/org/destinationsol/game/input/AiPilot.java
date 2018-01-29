@@ -16,6 +16,7 @@
 
 package org.destinationsol.game.input;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import org.destinationsol.common.SolMath;
 import org.destinationsol.game.Faction;
@@ -250,7 +251,9 @@ public class AiPilot implements Pilot {
                     desiredAngle = myMover.getBigObjAvoider().avoid(game, shipPos, dest, desiredAngle);
                 }
                 float desiredSpdLen = myDestProvider.getDesiredSpdLen();
-                float spdLenDiff = engine.getAcc() * ts;
+                TextureAtlas.AtlasRegion texture = farShip.getHullConfig().getTexture();
+                float acceleration = engine.getThrust() / ((texture.packedWidth * texture.packedHeight) * farShip.getHullConfig().getSize());
+                float spdLenDiff = acceleration * ts;
                 float spdLen = SolMath.approach(spd.len(), desiredSpdLen, spdLenDiff);
                 if (toDestLen < spdLen) {
                     spdLen = toDestLen;

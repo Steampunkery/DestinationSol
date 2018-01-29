@@ -17,6 +17,7 @@
 package org.destinationsol.game.ship;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -215,7 +216,8 @@ public class SolShip implements SolObject {
 
     public float getAcc() {
         Engine e = myHull.getEngine();
-        return e == null ? 0 : e.getAcc();
+        TextureAtlas.AtlasRegion texture = myHull.config.getTexture();
+        return e == null ? 0 : e.getThrust() / ((texture.packedWidth * texture.packedHeight) * myHull.config.getSize());
     }
 
     @Override
@@ -504,7 +506,7 @@ public class SolShip implements SolObject {
                 Engine ei = (Engine) item;
                 boolean ok = ei.isBig() == (myHull.config.getType() == HullConfig.Type.BIG);
                 if (ok && equip) {
-                    myHull.setEngine(ei);
+                    myHull.setEngine(ei, getAcc());
                 }
                 return ok;
             }
@@ -555,7 +557,7 @@ public class SolShip implements SolObject {
                 Gdx.app.log("SolShip", "maybeUnequip called for an engine item, can't do that!");
                 //throw new AssertionError("engine items not supported");
                 if (unequip) {
-                    myHull.setEngine(null);
+                    myHull.setEngine(null, 0.0f);
                 }
                 return true;
             }
