@@ -488,12 +488,12 @@ public class SolMath {
         return res;
     }
     
-    public static boolean canAccelerateCustom(float accAngle, Vector2 spd, float maxSpeedModifier) {
-        return spd.len() < Const.MAX_MOVE_SPD * maxSpeedModifier || angleDiff(angle(spd), accAngle) > 90;
+    public static boolean canAccelerateCustom(float accAngle, Vector2 spd, float acceleration) {
+        return spd.len() < acceleration * 4 || angleDiff(angle(spd), accAngle) > 90;
     }
 
     public static boolean canAccelerate(float accAngle, Vector2 spd) {
-        return canAccelerateCustom(accAngle, spd, 1.0f);
+        return canAccelerateCustom(accAngle, spd, 2.0f);
     }
 
     public static String nice(float v) {
