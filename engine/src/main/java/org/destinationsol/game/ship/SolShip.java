@@ -216,8 +216,8 @@ public class SolShip implements SolObject {
 
     public float getAcc() {
         Engine e = myHull.getEngine();
-        TextureAtlas.AtlasRegion texture = myHull.config.getTexture();
-        return e == null ? 0f : e.getThrust() / ((float)Math.sqrt(texture.packedWidth) * (float)Math.sqrt(texture.packedHeight) * myHull.config.getSize()); // ugly hack
+        float mass = myHull.getBody().getMass() * 1000;
+        return e == null ? 0f : e.getThrust() / mass;
     }
 
     @Override
