@@ -33,31 +33,30 @@ public class ShipEngine {
     private final Engine myItem;
     private float myRecoverAwait;
 
-    private final float acceleration;
-
-    public ShipEngine(Engine engine, float accel) {
+    public ShipEngine(Engine engine) {
         myItem = engine;
-        acceleration = accel;
     }
 
-    public void update(float angle, SolGame game, Pilot provider, Body body, Vector2 spd, SolObject owner,
+    public void update(float angle, SolGame game, Pilot provider, Body body, Vector2 spd, SolShip owner,
                        boolean controlsEnabled, float mass, Hull hull) {
 
-        boolean working = applyInput(game, angle, provider, body, spd, controlsEnabled, mass);
+        boolean working = applyInput(game, owner, angle, provider, body, spd, controlsEnabled, mass);
         game.getPartMan().toggleAllHullEmittersOfType(hull, "engine", working);
         if (working) {
             game.getSoundManager().play(game, myItem.getWorkSound(), owner.getPosition(), owner);
         }
     }
 
-    private boolean applyInput(SolGame cmp, float shipAngle, Pilot provider, Body body, Vector2 spd,
+    private boolean applyInput(SolGame cmp, SolShip owner, float shipAngle, Pilot provider, Body body, Vector2 spd,
                                boolean controlsEnabled, float mass) {
-        boolean spdOk = SolMath.canAccelerateCustom(shipAngle, spd, acceleration);
+        float acceleration = owner.getAcc();
+
+        boolean spdOk = SolMath.canAccelerateCustom(shipAngle, spd, acceleration * 4);
         boolean working = controlsEnabled && provider.isUp() && spdOk;
 
         Engine engineItem = myItem;
         if (working) {
-            Vector2 v = SolMath.fromAl(shipAngle, mass);
+            Vector2 v = SolMath.fromAl(shipAngle, acceleration);
             body.applyForceToCenter(v, true);
             SolMath.free(v);
         }

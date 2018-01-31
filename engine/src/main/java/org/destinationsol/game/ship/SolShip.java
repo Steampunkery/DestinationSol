@@ -506,7 +506,7 @@ public class SolShip implements SolObject {
                 Engine ei = (Engine) item;
                 boolean ok = ei.isBig() == (myHull.config.getType() == HullConfig.Type.BIG);
                 if (ok && equip) {
-                    myHull.setEngine(ei, getAcc());
+                    myHull.setEngine(ei);
                 }
                 return ok;
             }
@@ -557,7 +557,7 @@ public class SolShip implements SolObject {
                 Gdx.app.log("SolShip", "maybeUnequip called for an engine item, can't do that!");
                 //throw new AssertionError("engine items not supported");
                 if (unequip) {
-                    myHull.setEngine(null, 0.0f);
+                    myHull.setEngine(null);
                 }
                 return true;
             }

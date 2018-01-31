@@ -234,7 +234,7 @@ public class ShipBuilder {
     }
 
         if (engine != null) {
-            hull.setEngine(engine, ship.getAcc());
+            hull.setEngine(engine);
             hull.setParticleEmitters(game, ship, engine);
         }
         if (gun1 != null) {
