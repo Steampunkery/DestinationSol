@@ -51,7 +51,7 @@ public class ShipEngine {
                                boolean controlsEnabled, float mass) {
         float acceleration = owner.getAcc();
 
-        boolean spdOk = SolMath.canAccelerateCustom(shipAngle, spd, acceleration * 2);
+        boolean spdOk = SolMath.canAccelerateCustom(shipAngle, spd, acceleration * 4);
         boolean working = controlsEnabled && provider.isUp() && spdOk;
 
         Engine engineItem = myItem;
