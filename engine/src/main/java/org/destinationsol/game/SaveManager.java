@@ -88,8 +88,15 @@ public class SaveManager {
      */
     private static void writeMercs(SolGame game) {
         PrintWriter writer;
+
+        SolShip hero = game.getHero();
+
+        // Hero is null if the player exits while dead
+        if (hero == null) {
+            return;
+        }
         
-        ItemContainer mercenaries = game.getHero().getTradeContainer().getMercs();
+        ItemContainer mercenaries = hero.getTradeContainer().getMercs();
         
         List<JsonObject> jsons = new ArrayList<JsonObject>();
         
