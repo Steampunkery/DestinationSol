@@ -217,9 +217,8 @@ public class SolShip implements SolObject {
     public float getAcc() {
         Engine engine = myHull.getEngine();
         float mass = myHull.getBody().getMass();
-        float size = myHull.getHullConfig().getSize();
-        mass = mass * 1000 * size;
-        return engine == null ? 0f : engine.getThrust() / mass;
+        float accel = 3 + (1 - mass) / 2000;
+        return engine == null ? 0f : accel;
     }
 
     @Override

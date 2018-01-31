@@ -488,8 +488,8 @@ public class SolMath {
         return res;
     }
     
-    public static boolean canAccelerateCustom(float accAngle, Vector2 spd, float acceleration) {
-        return spd.len() < acceleration * 4 || angleDiff(angle(spd), accAngle) > 90;
+    public static boolean canAccelerateCustom(float accAngle, Vector2 spd, float topSpeed) {
+        return spd.len() < topSpeed || angleDiff(angle(spd), accAngle) > 90;
     }
 
     public static boolean canAccelerate(float accAngle, Vector2 spd) {
