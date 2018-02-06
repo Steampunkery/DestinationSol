@@ -33,7 +33,3 @@ jar {
         }
     }
 }
-
-eclipse.project {
-    name = appName + "-main"
-}
